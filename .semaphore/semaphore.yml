@@ -35,9 +35,6 @@ blocks:
         - name: Check Running Images
           commands:
             - docker ps
-        - name: Run Unit test
-          commands:
-            - docker exec -it docker_app_1 -m unittest
   - name: Ceck key
     task:
       jobs:
