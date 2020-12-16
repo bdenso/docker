@@ -20,7 +20,6 @@ blocks:
         - checkout
         - docker pull quay.io/jessica_ci/miner
         - docker-compose up -d
-      jobs:
         - name: Check Running Images
           commands:
             - docker ps
