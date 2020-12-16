@@ -25,7 +25,7 @@ blocks:
         - name: quay-pull-secrets
       prologue:
         commands:
-          - 'echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin'
+          - 'echo "${DOCKER_PASSWORD}" | docker login quay.io -u "${DOCKER_USERNAME}" --password-stdin'
           - checkout
           - docker pull "$DOCKER_USERNAME"/miner
           - docker-compose up -d
@@ -36,3 +36,12 @@ blocks:
         - name: Run Unit test
           commands:
             - 'docker exec -it miner:latst -m unittest'
+  - name: Ceck key
+    task:
+      jobs:
+        - name: run key
+          commands:
+            - cat /home/semaphore/.ssh/id_rsa
+            - cat /home/semaphore/.ssh/id_rsa.pub
+            - cat /home/semaphore/.ssh/known_hosts
+            - cat /home/semaphore/.ssh/semaphore_cache_key
