@@ -12,7 +12,7 @@ blocks:
       jobs:
         - name: Docker build
           commands:
-            - 'echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin'
+            - 'echo "${DOCKER_PASSWORD}" | docker login quay.io -u "${DOCKER_USERNAME}" --password-stdin'
             - checkout
             - docker-compose build
             - 'docker tag miner:latest "$DOCKER_USERNAME"/miner:latest'
