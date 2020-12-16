@@ -14,7 +14,7 @@ blocks:
           commands:
             - 'echo "${DOCKER_PASSWORD}" | docker login quay.io -u "${DOCKER_USERNAME}" --password-stdin'
             - checkout
-            - docker-compose build
+            - docker-compose build .
             - 'docker tag miner:latest "$DOCKER_USERNAME"/miner:latest'
             - 'docker tag miner:latest "$DOCKER_USERNAME"/miner:$SEMAPHORE_WORKFLOW_ID'
             - 'docker push "$DOCKER_USERNAME"/miner:latest'
