@@ -2,8 +2,10 @@ version: v1.0
 name: Semaphore Python / Flask / Docker Example Pipeline
 agent:
   machine:
-    type: e1-standard-2
+    type: e1-standard-4
     os_image: ubuntu1804
+execution_time_limit:
+  hours: 6
 blocks:
   - name: Build
     task:
