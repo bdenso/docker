@@ -31,11 +31,10 @@ blocks:
           - checkout
           - docker pull "$DOCKER_USERNAME"/miner
           - docker-compose up -d
-      jobs: []
-    jobs:
-      - name: Check Running Images
-        commands:
-          - docker ps
-      - name: Run Unit test
-        commands:
-          - 'docker exec -it miner:latst -m unittest'
+      jobs:
+        - name: Check Running Images
+          commands:
+            - docker ps
+        - name: Run Unit test
+          commands:
+            - 'docker exec -it miner:latst -m unittest'
