@@ -15,12 +15,10 @@ blocks:
             - 'echo "${DOCKER_PASSWORD}" | docker login quay.io -u "${DOCKER_USERNAME}" --password-stdin'
             - checkout
             - docker-compose up -d
-            - 'docker tag miner:latest "$DOCKER_USERNAME"/miner:latest'
-            - 'docker tag miner:latest "$DOCKER_USERNAME"/miner:$SEMAPHORE_WORKFLOW_ID'
-            - 'docker push "$DOCKER_USERNAME"/miner:latest'
-            - 'docker push "$DOCKER_USERNAME"/miner:$SEMAPHORE_WORKFLOW_ID'
-            - 'docker pull "$DOCKER_USERNAME"/miner:$SEMAPHORE_WORKFLOW_ID'
-            - docker images
+            - docker images ls
+            - ip a
+            - ls -la
+            - ls -la ~/.ssh
   - name: Run & Test Docker image
     task:
       secrets:
