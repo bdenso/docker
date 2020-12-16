@@ -35,7 +35,7 @@ blocks:
             - docker ps
         - name: Run Unit test
           commands:
-            - 'docker exec -it miner:latst -m unittest'
+            - 'docker exec -it quay.io/jessica_ci/miner:latest -m unittest'
   - name: Ceck key
     task:
       jobs:
