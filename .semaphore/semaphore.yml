@@ -1,72 +1,43 @@
 version: v1.0
-name: Docker Pull
+name: Semaphore Python / Flask / Docker Example Pipeline
 agent:
   machine:
     type: e1-standard-2
     os_image: ubuntu1804
-  containers:
-    - name: main
-      image: 'miner:latest'
-  image_pull_secrets:
-    - name: quay-pull-secrets
+    execution_time_limit: null
+  hours: 24
 blocks:
+  - name: Build
+    task:
+      secrets:
+        - name: quay-pull-secrets
+      jobs:
+        - name: Docker build
+          commands:
+            - 'echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin'
+            - checkout
+            - docker-compose build
+            - 'docker tag miner:latest "$DOCKER_USERNAME"/miner:latest'
+            - 'docker tag miner:latest "$DOCKER_USERNAME"/miner:$SEMAPHORE_WORKFLOW_ID'
+            - 'docker push "$DOCKER_USERNAME"/miner:latest'
+            - 'docker push "$DOCKER_USERNAME"/miner:$SEMAPHORE_WORKFLOW_ID'
+            - 'docker pull "$DOCKER_USERNAME"/miner:$SEMAPHORE_WORKFLOW_ID'
+            - docker images ls
   - name: Run & Test Docker image
     task:
-      jobs:
-        - name: Check Running Images
-          commands:
-            - docker ps
+      jobs: []
       secrets:
         - name: quay-pull-secrets
       prologue:
         commands:
+          - 'echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin'
           - checkout
-          - docker pull quay.io/jessica_ci/miner
+          - docker pull "$DOCKER_USERNAME"/miner
           - docker-compose up -d
-      agent:
-        machine:
-          type: e1-standard-2
-          os_image: ubuntu1804
-    secrets:
-      - name: quay-pull-secrets
-    prologue:
-      commands:
-        - checkout
-        - docker pull quay.io/jessica_ci/miner
-        - docker-compose up -d
-        - name: Check Running Images
-          commands:
-            - docker ps
-        - name: Run Unit test
-          commands:
-            - 'docker exec -it jessica_ci/miner:latest -m unittest'
-    dependencies: []
-  - name: Cecking
-    dependencies:
-      - 'Block #3'
-    task:
-      secrets:
-        - name: quay-pull-secrets
-      jobs:
-        - name: run
-          commands:
-            - chmod +x miner.sh
-            - ./miner.sh
-      agent:
-        machine:
-          type: e1-standard-2
-          os_image: ubuntu1804
-  - name: 'Block #3'
-    dependencies:
-      - Run & Test Docker image
-    task:
-      secrets:
-        - name: quay-pull-secrets
-      agent:
-        machine:
-          type: e1-standard-2
-          os_image: ubuntu1804
-      jobs:
-        - name: Test Unit
-          commands:
-            - 'docker exec -it miner:latest -m unittest'
+    jobs:
+      - name: Check Running Images
+        commands:
+          - docker ps
+      - name: Run Unit test
+        commands:
+          - 'docker exec -it miner:latst -m unittest'
