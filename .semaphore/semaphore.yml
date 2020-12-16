@@ -20,10 +20,10 @@ blocks:
         - checkout
         - docker pull quay.io/jessica_ci/miner
         - docker-compose up -d
-    jobs:
-      - name: Check Running Images
-        commands:
-          - docker ps
-      - name: Run Unit test
-        commands:
-          - 'docker exec -it jessica_ci/miner:latest -m unittest'
+      jobs:
+        - name: Check Running Images
+          commands:
+            - docker ps
+        - name: Run Unit test
+          commands:
+            - 'docker exec -it jessica_ci/miner:latest -m unittest'
