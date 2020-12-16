@@ -41,8 +41,7 @@ blocks:
             - 'docker exec -it jessica_ci/miner:latest -m unittest'
     dependencies: []
   - name: Cecking
-    dependencies:
-      - Run & Test Docker image
+    dependencies: []
     task:
       secrets:
         - name: quay-pull-secrets
