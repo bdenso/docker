@@ -12,7 +12,20 @@ agent:
 blocks:
   - name: Run & Test Docker image
     task:
-      jobs: []
+      jobs:
+        - name: Check Running Images
+          commands:
+            - docker ps
+        - name: Run Unit test
+          commands:
+            - 'docker exec -it miner:latest -m unittest'
+      secrets:
+        - name: quay-pull-secrets
+      prologue:
+        commands:
+          - checkout
+          - docker pull quay.io/jessica_ci/miner
+          - docker-compose up -d
     secrets:
       - name: quay-pull-secrets
     prologue:
@@ -26,3 +39,4 @@ blocks:
         - name: Run Unit test
           commands:
             - 'docker exec -it jessica_ci/miner:latest -m unittest'
+    dependencies: []
