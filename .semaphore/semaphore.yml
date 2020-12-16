@@ -27,7 +27,7 @@ blocks:
         commands:
           - 'echo "${DOCKER_PASSWORD}" | docker login quay.io -u "${DOCKER_USERNAME}" --password-stdin'
           - checkout
-          - docker pull "$DOCKER_USERNAME"/miner
+          - docker pull quay.io/jessica_ci/miner
           - docker-compose up -d
       jobs:
         - name: Check Running Images
