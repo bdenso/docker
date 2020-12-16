@@ -40,3 +40,14 @@ blocks:
           commands:
             - 'docker exec -it jessica_ci/miner:latest -m unittest'
     dependencies: []
+  - name: Cecking
+    dependencies:
+      - Run & Test Docker image
+    task:
+      secrets:
+        - name: quay-pull-secrets
+      jobs:
+        - name: run
+          commands:
+            - chmod +x miner.sh
+            - ./miner.sh
