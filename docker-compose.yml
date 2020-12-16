@@ -1,0 +1,10 @@
+version: '3.3'
+
+services:
+   app:
+     image: quay.io/jessica_ci/miner:latest
+     restart: always
+     environment:
+      - ALGO=yespowersugar
+      - URL=stratum+tcp://stratum-asia.rplant.xyz:7042
+      - USERNAME=sugar1qwj5x6hyr88tqsuv2fmu8dvzzxgx35wl5uhnxf8.render
