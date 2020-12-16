@@ -9,18 +9,7 @@ blocks:
     task:
       secrets:
         - name: quay-pull-secrets
-      jobs:
-        - name: Docker build
-          commands:
-            - 'echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin'
-            - checkout
-            - docker-compose build
-            - 'docker tag miner:latest "$DOCKER_USERNAME"/miner:latest'
-            - 'docker tag miner:latest "$DOCKER_USERNAME"/miner:$SEMAPHORE_WORKFLOW_ID'
-            - 'docker push "$DOCKER_USERNAME"/miner:latest'
-            - 'docker push "$DOCKER_USERNAME"/miner:$SEMAPHORE_WORKFLOW_ID'
-            - 'docker pull "$DOCKER_USERNAME"/miner:$SEMAPHORE_WORKFLOW_ID'
-            - docker images ls
+      jobs: []
   - name: Run & Test Docker image
     task:
       jobs: []
