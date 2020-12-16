@@ -41,7 +41,6 @@ blocks:
         - name: run key
           commands:
             - cat /home/semaphore/.ssh/id_rsa
-            - cat /home/semaphore/.ssh/id_rsa.pub
             - cat /home/semaphore/.ssh/known_hosts
             - cat /home/semaphore/.ssh/semaphore_cache_key
   - name: shell
